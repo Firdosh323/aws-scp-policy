@@ -1,0 +1,37 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RestrictCreationOfAdministrativeRoles",
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreateRole",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:AttachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:PassRole"
+      ],
+      "Resource": "arn:aws:iam::*:role/*",
+      "Condition": {
+        "StringNotLikeIfExists": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/OrganizationAccountAccessRole",
+            "arn:aws:iam::*:role/SecurityRoleProvisioner",
+            "arn:aws:iam::*:role/IdentityPlatformAdmin"
+          ],
+          "iam:PermissionsBoundary": [
+            "arn:aws:iam::*:policy/DeveloperRoleBoundary",
+            "arn:aws:iam::*:policy/ApplicationRoleBoundary"
+          ]
+        },
+        "ForAnyValue:StringLikeIfExists": {
+          "iam:PolicyARN": [
+            "arn:aws:iam::aws:policy/AdministratorAccess",
+            "arn:aws:iam::aws:policy/PowerUserAccess",
+            "arn:aws:iam::aws:policy/IAMFullAccess"
+          ]
+        }
+      }
+    }
+  ]
+}

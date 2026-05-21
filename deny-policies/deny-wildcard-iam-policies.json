@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyWildcardCustomerManagedPolicies",
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreatePolicyVersion",
+        "iam:SetDefaultPolicyVersion"
+      ],
+      "Resource": "arn:aws:iam::*:policy/*",
+      "Condition": {
+        "StringNotLikeIfExists": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/IdentityPlatformAdmin",
+            "arn:aws:iam::*:role/SecurityPolicyAdmin"
+          ]
+        },
+        "StringLike": {
+          "iam:PolicyArn": "arn:aws:iam::*:policy/*"
+        }
+      }
+    },
+    {
+      "Sid": "DenyInlineWildcardIamPolicies",
+      "Effect": "Deny",
+      "Action": [
+        "iam:PutGroupPolicy",
+        "iam:PutRolePolicy",
+        "iam:PutUserPolicy"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotLikeIfExists": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/IdentityPlatformAdmin",
+            "arn:aws:iam::*:role/SecurityPolicyAdmin"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyAttachmentOfBroadAwsManagedPolicies",
+      "Effect": "Deny",
+      "Action": [
+        "iam:AttachGroupPolicy",
+        "iam:AttachRolePolicy",
+        "iam:AttachUserPolicy"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotLikeIfExists": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/IdentityPlatformAdmin",
+            "arn:aws:iam::*:role/SecurityPolicyAdmin"
+          ]
+        },
+        "ArnLike": {
+          "iam:PolicyARN": [
+            "arn:aws:iam::aws:policy/AdministratorAccess",
+            "arn:aws:iam::aws:policy/PowerUserAccess",
+            "arn:aws:iam::aws:policy/IAMFullAccess"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+aws_region = "us-east-1"
+
+policy_targets = {
+  "deny-policies/deny-root-user.json" = {
+    description = "Block use of the member account root principal"
+    target_ids  = ["ou-abcd-production"]
+  }
+
+  "deny-policies/deny-disable-cloudtrail.json" = {
+    description = "Prevent CloudTrail tampering in production"
+    target_ids  = ["ou-abcd-production", "ou-abcd-security"]
+  }
+
+  "deny-policies/deny-wildcard-iam-policies.json" = {
+    description = "Restrict broad IAM policy attachment to identity platform roles"
+    target_ids  = ["ou-abcd-production", "ou-abcd-developers"]
+  }
+
+  "deny-policies/restrict-admin-role-creation.json" = {
+    description = "Allow only approved platform roles to create or escalate admin roles"
+    target_ids  = ["ou-abcd-production", "ou-abcd-security"]
+  }
+
+  "guardrail-policies/enforce-encryption.json" = {
+    description = "Require encryption for storage services"
+    target_ids  = ["ou-abcd-production", "ou-abcd-sandbox"]
+  }
+
+  "guardrail-policies/restrict-expensive-regions.json" = {
+    description = "Block high-cost regions for compute-heavy workloads"
+    target_ids  = ["ou-abcd-production", "ou-abcd-developers"]
+  }
+}

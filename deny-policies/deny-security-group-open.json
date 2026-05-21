@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyIpv4OpenSecurityGroups",
+      "Effect": "Deny",
+      "Action": "ec2:AuthorizeSecurityGroupIngress",
+      "Resource": "*",
+      "Condition": {
+        "IpAddress": {
+          "ec2:CidrIp": "0.0.0.0/0"
+        }
+      }
+    },
+    {
+      "Sid": "DenyIpv6OpenSecurityGroups",
+      "Effect": "Deny",
+      "Action": "ec2:AuthorizeSecurityGroupIngress",
+      "Resource": "*",
+      "Condition": {
+        "IpAddress": {
+          "ec2:CidrIpv6": "::/0"
+        }
+      }
+    }
+  ]
+}

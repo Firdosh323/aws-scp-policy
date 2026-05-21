@@ -1,0 +1,39 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyHighCostRegionsForComputeAndData",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:CreateFleet",
+        "eks:CreateCluster",
+        "rds:CreateDBInstance",
+        "rds:CreateDBCluster",
+        "redshift:CreateCluster",
+        "elasticache:CreateCacheCluster",
+        "elasticache:CreateReplicationGroup",
+        "opensearch:CreateDomain"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:RequestedRegion": [
+            "af-south-1",
+            "ap-east-1",
+            "eu-central-2",
+            "me-central-1",
+            "me-south-1",
+            "sa-east-1"
+          ]
+        },
+        "StringNotLikeIfExists": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/DisasterRecoveryAdmin",
+            "arn:aws:iam::*:role/PlatformEngineeringAdmin"
+          ]
+        }
+      }
+    }
+  ]
+}

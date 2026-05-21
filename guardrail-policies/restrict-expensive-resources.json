@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyExpensiveEc2Families",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "ec2:InstanceType": [
+            "p*.*",
+            "g*.*",
+            "u*.*",
+            "x*.*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyLargeRdsClasses",
+      "Effect": "Deny",
+      "Action": [
+        "rds:CreateDBInstance",
+        "rds:ModifyDBInstance"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "rds:DatabaseClass": [
+            "db.r6g.4xlarge",
+            "db.r6i.4xlarge",
+            "db.x2g.*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyManualSnapshots",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateSnapshot",
+        "rds:CreateDBSnapshot",
+        "rds:CreateDBClusterSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
